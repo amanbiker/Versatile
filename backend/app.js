@@ -8,7 +8,7 @@ const cors = require("cors")
 
 
 app.use(cors({
-  origin: "http://127.0.0.1:5500", // allow only your frontend origin
+  origin: "https://versatile-gamma.vercel.app", // allow only your frontend origin
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,               // allow cookies if needed
 }));
