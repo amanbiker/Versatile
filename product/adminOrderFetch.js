@@ -1,6 +1,6 @@
 async function fetchAdminOrders() {
   try {
-    const response = await fetch("http://localhost:4000/api/v1/admin/orders", {
+    const response = await fetch(" https://versatile-aqao.onrender.com/api/v1/admin/orders", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -68,7 +68,7 @@ async function fetchAdminOrders() {
         const newStatus = e.target.dataset.status;
 
         try {
-          const response = await fetch(`http://localhost:4000/api/v1/admin/order/${orderId}`, {
+          const response = await fetch(`https://versatile-aqao.onrender.com/api/v1/admin/order/${orderId}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",

@@ -3,7 +3,7 @@
 
  async function getProducts() {
       try {
-        const response = await fetch("http://localhost:4000/api/v1/products", {
+        const response = await fetch("https://versatile-aqao.onrender.com/api/v1/products", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 async function fetchProductLevels() {
     try {
-    const response = await fetch("http://localhost:4000/api/v1/permit-levels", {
+    const response = await fetch("https://versatile-aqao.onrender.com/api/v1/permit-levels", {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json',

@@ -43,7 +43,7 @@ async function submitOrder() {
   };
 
   try {
-    const response = await fetch("http://localhost:4000/api/v1/order/new", {
+    const response = await fetch("https://versatile-aqao.onrender.com/api/v1/order/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

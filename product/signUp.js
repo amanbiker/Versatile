@@ -17,7 +17,7 @@
     // Async function to send POST request
     const userSignUp = async (userData) => {
       try {
-        const response = await fetch("http://localhost:4000/api/v1/register", {
+        const response = await fetch("https://versatile-aqao.onrender.com/api/v1/register", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

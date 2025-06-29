@@ -3,7 +3,7 @@ const signout = document.getElementById("signout");
 signout.addEventListener("click", async (e) => {
   e.preventDefault();
   try {
-    const response = await fetch("http://localhost:4000/api/v1/logout", {
+    const response = await fetch("https://versatile-aqao.onrender.com/api/v1/logout", {
       method: 'GET',
       credentials: 'include',
     });

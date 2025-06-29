@@ -53,7 +53,7 @@ function getBase64(file) {
     // Async function to send POST request
     const createLevel = async (createLevelData) => {
       try {
-        const response = await fetch("http://localhost:4000/api/v1/admin/new-level", {
+        const response = await fetch("https://versatile-aqao.onrender.com/api/v1/admin/new-level", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
