@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Order Table</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+
+      .btn {
+        padding: 6px 12px;
+        margin-right: 5px;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+      }
+
+      .btn-view {
+        width: 6vw;
+        height: 5vh;
+        background-color: #007bff;
+      }
+
+      .btn-view:hover {
+        background-color: #0a3058;
+      }
+
+      .btn-delete {
+        width: 5vw;
+        height: 5vh;
+        background-color: #dc3545;
+      }
+
+      .btn-delete:hover {
+        background-color: #6d0813;
+      }
+
+      .btn-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        height: 15vh;
+        align-items: center;
+      }
+
+      header {
+        background-color: rgb(220 138 32 / 81%);
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 6px;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        margin-left: 55vw;
+      }
+      nav a {
+        color: #fff;
+        margin: 0 15px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      #sidebar {
+        height: 100vh;
+        width: 250px;
+        background-color: #a26224;
+        color: white;
+        position: fixed;
+        top: 0;
+        left: -260px;
+        transition: all 0.3s ease;
+        padding-top: 60px;
+        z-index: 999;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+      }
+
+      #sidebar.active {
+        left: 0;
+      }
+
+      .profile {
+        text-align: center;
+        padding: 10px 10px;
+        margin-top: 4vh;
+      }
+
+      .profile-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        object-fit: cover;
+      }
+
+      .profile h3 {
+        margin: 10px 0 5px;
+      }
+
+      .profile p {
+        margin: 0;
+        font-size: 14px;
+        color: #bbb;
+      }
+
+      .add-product-btn {
+        margin: 20px auto;
+        display: block;
+        width: 61%;
+        padding: 10px;
+        background-color: #ffc107;
+        border: none;
+        border-radius: 5px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+      }
+
+      .add-product-btn:hover {
+        background-color: #e0a800;
+      }
+
+      .toast-container {
+        position: fixed;
+        top: 109px;
+        right: 250px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 20vw;
+        height: 30vh;
+      }
+
+      .toast {
+        min-width: 250px;
+        padding: 14px 18px;
+        border-radius: 8px;
+        color: rgb(3, 0, 0);
+        font-size: 15px;
+        animation: slideIn 0.4s ease, fadeOut 0.4s ease 3.6s;
+        position: relative;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .toast.success {
+        background-color: #4caf50;
+      }
+
+      .toast.error {
+        background-color: #f44336;
+      }
+
+      .bottom {
+        margin-top: 40vh;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      .bottom button {
+        text-decoration: none;
+        color: #e7e7e7;
+        font-weight: bold;
+        text-align: center;
+        font-size: medium;
+        padding: 1vw 1vh;
+        border-radius: 15px;
+        background: none;
+        border: none;
+      }
+
+      .bottom button:hover {
+        color: #619fe2f2;
+        cursor: pointer;
+      }
+
+      /* here paste */
+
+      .table {
+        width: 100%;
+        margin-top: 30px;
+        border-collapse: collapse;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .tr {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #eaeaea;
+        transition: background 0.2s ease;
+      }
+
+      .tr:hover {
+        background-color: #fdf6eb;
+      }
+
+      .th,
+      .td {
+        flex: 1;
+        padding: 14px;
+        text-align: center;
+        font-family: "Segoe UI", sans-serif;
+        font-size: 16px;
+      }
+
+      .th {
+        background-color: #ffb84d;
+        font-weight: bold;
+        color: #333;
+        border-bottom: 2px solid #d18800;
+      }
+
+      .btn-view {
+        background-color: #28a745;
+      }
+
+      .btn-view:hover {
+        background-color: #218838;
+      }
+
+      .btn-delete {
+        background-color: #dc3545;
+      }
+
+      .btn-delete:hover {
+        background-color: #c82333;
+      }
+
+      .level-container {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #ccc;
+        padding: 4px 0;
+        width: 6vw;
+      }
+
+      .level-container h5 {
+        margin: 0;
+        font-size: 15px;
+      }
+
+      .td-address {
+        width: 9vw;
+        text-wrap: wrap;
+        margin-left: 7vw;
+      }
+      .delivered-order {
+        background-color: #ffe5e5; /* light red background */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <header>
+      <i
+        class="bx bx-menu"
+        id="toggleSidebarBtn"
+        style="
+          position: absolute;
+          top: 6vh;
+          left: 3vw;
+          font-size: 30px;
+          cursor: pointer;
+          z-index: 1000;
+          color: black;
+        "
+      ></i>
+
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Gallery</a>
+        <a href="#">Blogs</a>
+        <a href="#">Contact</a>
+        <a href="Login.html">Login</a>
+      </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <div class="profile">
+        <img src="" alt="Profile" class="profile-img" />
+        <h3>Aman Gupta</h3>
+        <p>Manager</p>
+      </div>
+      <a href="./adminCreateProduct.html" class="add-product-btn"
+        >➕ Add Level</a
+      >
+      <a href="./product.html" class="add-product-btn">Programs</a>
+      <a href="./signUp.html" class="add-product-btn">Register User</a>
+      <div class="bottom">
+        <button type="button" id="signout">Sign Out</button>
+      </div>
+    </div>
+
+    <main>
+      <h2>Orders</h2>
+
+      <div class="table">
+        <div class="thead">
+          <div class="tr">
+            <div class="th">Order ID</div>
+            <div class="th">Date</div>
+            <div class="th">Customer Name</div>
+            <div class="th">Product Name</div>
+            <div class="th">Level - Qty</div>
+            <div class="th">Address</div>
+            <div class="th">Total Cost</div>
+            <div class="th">Actions</div>
+          </div>
+        </div>
+        <div class="tbody"></div>
+      </div>
+    </main>
+
+    <script src="signout.js"></script>
+    <script src="adminOrderFetch.js"></script>
+
+    <script>
+      window.onload = fetchAdminOrders;
+      document
+        .getElementById("toggleSidebarBtn")
+        .addEventListener("click", function () {
+          const sidebar = document.getElementById("sidebar");
+          sidebar.classList.toggle("active");
+
+          function showToast(message, type = "success") {
+            const container = document.getElementById("toastContainer");
+            const toast = document.createElement("div");
+            toast.classList.add("toast", type);
+            toast.textContent = message;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+              toast.style.opacity = "0";
+            }, 3600); // fade out
+
+            setTimeout(() => {
+              toast.remove();
+            }, 4000); // remove from DOM
+          }
+        });
+    </script>
+  </body>
+</html>

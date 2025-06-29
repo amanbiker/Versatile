@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Orders</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .order-card {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .order-header {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .order-details p, .product-item p {
+      margin: 4px 0;
+      color: #444;
+    }
+
+    .products-list {
+      margin-top: 10px;
+      padding-left: 15px;
+    }
+
+    .product-item {
+      padding: 8px;
+      margin: 6px 0;
+      border-left: 3px solid #4CAF50;
+      background: #f9f9f9;
+      border-radius: 6px;
+    }
+
+    .timeline {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 20px 0;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 14px;
+      left: 10%;
+      width: 80%;
+      height: 4px;
+      background-color: #ddd;
+      z-index: 1;
+    }
+
+    .step {
+      position: relative;
+      text-align: center;
+      z-index: 2;
+      width: 33%;
+    }
+
+    .step .circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: #ddd;
+      margin: 0 auto 8px;
+    }
+
+    .step.active .circle {
+      background-color: #4CAF50;
+    }
+
+    .step .label {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .step.active .label {
+      font-weight: bold;
+      color: #4CAF50;
+    }
+
+    @media (max-width: 600px) {
+      .timeline {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .timeline::before {
+        top: 0;
+        left: 50%;
+        width: 4px;
+        height: 100%;
+      }
+
+      .step {
+        margin-bottom: 30px;
+        width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="ordersContainer">
+    <h2>Your Orders</h2>
+  </div>
+
+  <script>
+    window.onload = fetchUserOrders;
+
+    async function fetchUserOrders() {
+      try {
+        const response = await fetch("http://localhost:4000/api/v1/orders/me", {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        });
+
+        const data = await response.json();
+    
+        const container = document.getElementById("ordersContainer");
+
+        if (!data.orders || data.orders.length === 0) {
+          container.innerHTML += `<p>No orders found.</p>`;
+          return;
+        }
+
+        data.orders.forEach((order, index) => {
+          const orderCard = document.createElement('div');
+          orderCard.className = 'order-card';
+
+          let productItems = '';
+          order.orderItems.forEach(item => {
+            productItems += `
+              <div class="product-item">
+                <p><strong>Product:</strong> ${item.product.name}</p>
+                <p><strong>Level Number:</strong> ${item.levelNumber}</p>
+                <p><strong>Quantity:</strong> ${item.quantity}</p>
+                <p><strong>Price:</strong> ₹${item.price}</p>
+              </div>
+            `;
+          });
+
+          orderCard.innerHTML = `
+            <div class="order-header">Order #${order._id.slice(-6).toUpperCase()}</div>
+            <div class="order-details">
+              <p><strong>User:</strong> ${order.user.name} (${order.user.email})</p>
+              <p><strong>Total Price:</strong> ₹${order.totalPrice}</p>
+              <p><strong>Payment Status:</strong> ${order.paymentInfo.status}</p>
+              <p><strong>Order Status:</strong> ${order.orderStatus}</p>
+              <p><strong>Shipping Address:</strong> ${order.shippingInfo.house}, ${order.shippingInfo.area}, ${order.shippingInfo.landmark}, ${order.shippingInfo.city}, ${order.shippingInfo.state}, ${order.shippingInfo.country} - ${order.shippingInfo.pincode}</p>
+              <p><strong>Phone:</strong> ${order.shippingInfo.phoneNo}</p>
+            </div>
+            <div class="products-list">
+              ${productItems}
+            </div>
+            <div class="timeline">
+              <div class="step ${order.orderStatus === "Processing" || order.orderStatus === "Shipped" || order.orderStatus === "Delivered" ? "active" : ""}">
+                <div class="circle"></div>
+                <div class="label">Order Placed</div>
+              </div>
+              <div class="step ${order.orderStatus === "Shipped" || order.orderStatus === "Delivered" ? "active" : ""}">
+                <div class="circle"></div>
+                <div class="label">Shipped</div>
+              </div>
+              <div class="step ${order.orderStatus === "Delivered" ? "active" : ""}">
+                <div class="circle"></div>
+                <div class="label">Delivered</div>
+              </div>
+            </div>
+          `;
+
+          container.appendChild(orderCard);
+        });
+
+      } catch (error) {
+        console.error("Failed to fetch orders:", error);
+        document.getElementById("ordersContainer").innerHTML += `<p style="color:red;">Error loading orders.</p>`;
+      }
+    }
+  </script>
+
+</body>
+</html>

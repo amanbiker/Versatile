@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Address Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+
+    form {
+      max-width: 27vw;
+    display: flex
+;
+    flex-direction: column;
+    max-height: 103vh;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    }
+
+    label {
+     font-style: italic;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+    }
+
+    input, select {
+      width: 100%;
+    padding: 6px;
+    margin-top: 5px;
+    margin-bottom: 4px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    }
+
+    .half {
+      width: 48%;
+      display: inline-block;
+    }
+
+    .half:first-child {
+      margin-right: 4%;
+    }
+
+    a {
+     text-align: center;
+    width: 34%;
+    padding: 12px;
+    background-color: #d9af49;
+    color: #250e0e;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    }
+
+    .address-2{
+        display: flex;
+        flex-direction: row;
+    }
+    .bottom{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-top: 2vh;
+    }
+    a:hover{
+        cursor: pointer;
+        background-color: #806527;;
+    }
+    #shipping-head{
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        text-align: center;
+        font-size: 21px;
+        line-height: 2px;
+    }
+    hr{
+        color: bisque;
+        width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <form>
+    <h2 id="shipping-head">Shipping Details</h2>
+    <hr>
+    <div class="top">
+        <label for="country">Country/Region</label>
+    <select id="country">
+      <option>India</option>
+    </select>
+
+    <label for="name">Full name (First and Last name)</label>
+    <input type="text" id="name" placeholder="Name" name="name" required>
+
+    <label for="phone">Mobile number</label>
+    <input type="tel" id="phone" placeholder="e.g. 91XXXXXXXX" name="mobile" required>
+
+    <label for="flat">Flat, House no., Building, Company, Apartment</label>
+    <input type="text" id="flat" name="house-num" required>
+
+    <label for="area">Area, Street, Sector, Village</label>
+    <input type="text" id="area" name="area" required>
+
+    <label for="landmark">Landmark</label>
+    <input type="text" id="landmark" name="landmark">
+
+    <div class="address-2">
+        <div class="half">
+            <label for="pincode">Pincode</label>
+            <input type="number" id="pincode" name="pincode" required>
+        </div>
+
+        <div class="half">
+            <label for="city">Town/City</label>
+            <input type="text" id="city" name="city" required>
+        </div>
+    </div>
+
+    <label for="state">State</label>
+    <select id="state" name="state">
+      <option>MAHARASHTRA</option>
+      <option>DELHI</option>
+      <option>UTTAR PRADESH</option>
+      <option>BIHAR</option>
+      <option>TAMIL NADU</option>
+      <!-- Add more if needed -->
+    </select>
+
+    </div>
+    <div class="bottom">
+         <a href="./product.html">Back</a>
+        <a href="#" id="payBtn">Pay</a>
+
+    </div> 
+  </form>
+
+  <script>
+  document.getElementById("payBtn").addEventListener("click", function (e) {
+    e.preventDefault(); // Prevent default navigation
+
+    const shippingInfo = {
+      country: document.getElementById("country").value,
+      name: document.getElementById("name").value,
+      phoneNo: document.getElementById("phone").value,
+      house: document.getElementById("flat").value,
+      area: document.getElementById("area").value,
+      landmark: document.getElementById("landmark").value,
+      pincode: parseInt(document.getElementById("pincode").value),
+      city: document.getElementById("city").value,
+      state: document.getElementById("state").value
+    };
+
+    // Optional: Basic validation
+    for (let key in shippingInfo) {
+      if (!shippingInfo[key] && key !== "landmark") {
+        alert("Please fill in all required fields.");
+        return;
+      }
+    }
+
+    localStorage.setItem("shippingInfo", JSON.stringify(shippingInfo));
+    alert("Shipping details saved!");
+
+    // Redirect to payment page (update the link as needed)
+    window.location.href = "./payment.html";
+  });
+</script>
+
+
+</body>
+</html>

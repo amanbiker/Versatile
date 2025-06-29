@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products Page</title>
+   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="product.css" />
+</head>
+<body>
+    
+  <i class='bx bx-menu' id="toggleSidebarBtn" style="position: absolute; top: 6vh; left: 3vw; font-size: 30px; cursor: pointer; z-index: 1000; color: black;"></i>
+
+  <div class="container">
+    <!-- <aside class="sidebar">
+     
+    </aside> -->
+
+    <div id="sidebar">
+   <div class="user-info">
+        <div class="user-image">
+          
+        </div>
+        <div class="other-user-info">
+          <h3 id="user-name">Hello</h3>
+        <p id="user-email">Please Login</p>
+        <a href="./adminOrder.html" class="admin-btn" id="admin">Admin</a>
+        </div>
+      </div>
+
+      <div class="order-details">
+        <!-- <button onclick="viewOrderDetails()">View Order Details</button> -->
+        <a id="order-detail" href="./UserOrderDetail.html">View Order Details</a>
+        <button type="button" id="signout">Sign Out</button>
+      </div>
+</div>
+
+
+    <main class="main-content">
+      <div class="main-container">
+        <div class="product-list" id="productList">
+          <h2>Products</h2>
+         
+        </div>
+
+        <div class="product-detail" id="productDetail">
+          <h2>Product Levels</h2>
+          <div id="levels" class="levels">
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <h3>Total: ₹<span id="total">0</span></h3>
+        <!-- <button onclick="buyNow()">Buy Now</button> -->
+        <button onclick="saveCartToLocalStorage()">Buy Now</a>
+      </div>
+    </main>
+  </div>
+
+  <script src="product.js"></script>
+  <script src="signout.js"></script>
+   
+  <!-- <script>
+    document.getElementById("toggleSidebarBtn").addEventListener("click", function () {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("active");
+    const user = localStorage.getItem("user");
+    const userName = user.name;
+    const userEmail = user.email;
+  });
+  </script> -->
+
+  <script>
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // Toggle sidebar
+    document.getElementById("toggleSidebarBtn").addEventListener("click", function () {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("active");
+    });
+
+    // Get user data from localStorage
+    const user = JSON.parse(localStorage.getItem("user")); // Parse the string to object
+
+    let admin = document.getElementById("admin");
+
+
+      if (user.role === "admin") {
+        admin.style.display = "block"; // or "flex", depending on your layout
+      } else {
+        admin.style.display = "none";
+      }
+
+
+    if (user) {
+      // Set user name and email in the DOM
+      document.getElementById("user-name").textContent = user.name;
+      document.getElementById("user-email").textContent = user.email;
+    } else {
+      console.warn("No user info found in localStorage");
+    }
+  });
+</script>
+
+
+</body>
+</html>
