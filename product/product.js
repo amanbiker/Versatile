@@ -101,7 +101,7 @@ async function showProductLevels(product) {
       div.innerHTML = `
         <div class="level-container">
           <div class="product-label">
-           <h3>Level ${level.levelNumber}</h3>
+           <h3>${level.levelNumber}</h3>
           </div>
 
           <div class="product-image">
